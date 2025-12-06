@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burguer Master - Faça seu pedido online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #F7C59F;
+            --accent: #004E89;
+            --light: #FFF;
+            --dark: #333;
+            --success: #4CAF50;
+            --gray: #f5f5f5;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 15px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Container da Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img i {
+            font-size: 30px;
+            color: var(--primary);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .restaurant-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .restaurant-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+            font-weight: normal;
+            color: #F7C59F;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Layout */
+        main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        /* Menu Section */
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+            color: var(--primary);
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .category-btn {
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .item-image {
+            height: 160px;
+            position: relative;
+            background-color: var(--secondary);
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .menu-item:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .image-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 50px;
+            background-color: var(--secondary);
+        }
+
+        .item-content {
+            padding: 15px;
+        }
+
+        .item-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            min-height: 40px;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .add-to-cart {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #003A66;
+        }
+
+        /* Cart Section */
+        .cart-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .cart-items {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity {
+            font-weight: bold;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 0;
+            border-top: 2px solid var(--secondary);
+            margin-top: 10px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .checkout-btn:hover {
+            background-color: #3d8b40;
+        }
+
+        /* Modal de Pagamento - CORRIGIDO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto; /* Permite rolagem */
+            padding: 20px 0; /* Espaço para rolagem */
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto; /* Centraliza com margem */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 70vh; /* Altura máxima */
+            overflow-y: auto; /* Permite rolagem interna */
+        }
+
+        .close-modal {
+            cursor: pointer;
+            font-size: 24px;
+            background: rgba(255,255,255,0.2);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary);
+            background-color: rgba(255, 107, 53, 0.05);
+        }
+
+        .payment-method.selected {
+            border-color: var(--accent);
+            background-color: rgba(0, 78, 137, 0.08);
+        }
+
+        .payment-icon {
+            font-size: 24px;
+            color: var(--accent);
+            min-width: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+        }
+
+        .submit-payment {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-payment:hover {
+            background-color: #3d8b40;
+        }
+
+        /* Confirmação do Pedido */
+        .confirmation {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .confirmation i {
+            font-size: 60px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        /* Scroll personalizado */
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10px auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .logo-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .restaurant-name {
+                font-size: 20px;
+            }
+            
+            .restaurant-tagline {
+                font-size: 12px;
+            }
+            
+            .modal-body {
+                padding: 20px 15px;
+                max-height: 80vh;
+            }
+            
+            .payment-method {
+                padding: 12px;
+            }
+            
+            .form-group input {
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .modal-body {
+                max-height: 60vh;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .modal-body {
+                max-height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header com Logo -->
+    <header>
+        <div class="container header-content">
+            <div class="logo-container">
+                <!-- LOGO: Escolha uma das opções abaixo -->
+                
+                <!-- Opção 1: Com ícone (já ativa) -->
+                <div class="logo-img">
+                    <i class="fas fa-hamburger"></i>
+                </div>
+                
+                <!-- Opção 2: Com imagem local -->
+                <!--
+                <img src="sua-logo.jpg" alt="Logo" class="logo-img">
+                -->
+                
+                <!-- Opção 3: Com imagem da internet -->
+                <!--
+                <img src="https://exemplo.com/sua-logo.jpg" alt="Logo" class="logo-img">
+                -->
+                
+                <div class="logo-text">
+                    <!-- NOME DA SUA LANCHONETE -->
+                    <h1 class="restaurant-name">Burguer Master</h1>
+                    <!-- SLOGAN -->
+                    <p class="restaurant-tagline">O melhor hambúrguer da cidade</p>
+                </div>
+            </div>
+            <div class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart fa-lg"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <main>
+            <!-- Menu Section -->
+            <section class="menu-section">
+                <h2 class="section-title">Cardápio</h2>
+                
+                <div class="category-filter">
+                    <button class="category-btn active" data-category="all">Todos</button>
+                    <button class="category-btn" data-category="burgers">Hambúrgueres</button>
+                    <button class="category-btn" data-category="snacks">Lanches</button>
+                    <button class="category-btn" data-category="drinks">Bebidas</button>
+                    <button class="category-btn" data-category="desserts">Sobremesas</button>
+                </div>
+
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Menu items will be loaded by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Cart Section -->
+            <section class="cart-section">
+                <h2 class="section-title">Seu Pedido</h2>
+                
+                <div class="cart-items" id="cartItems">
+                    <p class="empty-cart-message" id="emptyCartMessage">Seu carrinho está vazio. Adicione itens do cardápio.</p>
+                </div>
+                
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">R$ 0,00</span>
+                </div>
+                
+                <button class="checkout-btn" id="checkoutBtn" disabled>Finalizar Pedido</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal de Pagamento - CORRIGIDO -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="margin: 0;">Finalizar Pedido</h3>
+                <span class="close-modal" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="paymentForm">
+                    <div class="payment-methods">
+                        <div class="payment-method selected" data-method="pix">
+                            <i class="fas fa-qrcode payment-icon"></i>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0;">PIX</h4>
+                                <p style="margin: 0; font-size: 14px; color: #666;">Pagamento instantâneo</p>
+                            </div>
+                        </div>
+                        <div class="payment-method" data-method="credit">
+                            <i class="fas fa-credit-card payment-icon"></i>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0;">Cartão de Crédito</h4>
+                                <p style="margin: 0; font-size: 14px; color: #666;">Pague com seu cartão</p>
+                            </div>
+                        </div>
+                        <div class="payment-method" data-method="debit">
+                            <i class="fas fa-credit-card payment-icon"></i>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0;">Cartão de Débito</h4>
+                                <p style="margin: 0; font-size: 14px; color: #666;">Pague com seu cartão</p>
+                            </div>
+                        </div>
+                        <div class="payment-method" data-method="cash">
+                            <i class="fas fa-money-bill-wave payment-icon"></i>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0;">Dinheiro</h4>
+                                <p style="margin: 0; font-size: 14px; color: #666;">Pagamento na entrega</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label for="customerName">Seu Nome *</label>
+                            <input type="text" id="customerName" placeholder="Como devemos chamar você?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerPhone">WhatsApp *</label>
+                            <input type="tel" id="customerPhone" placeholder="(11) 99999-9999" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerAddress">Endereço de Entrega *</label>
+                            <input type="text" id="customerAddress" placeholder="Rua, número, bairro, complemento..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderNotes">Observações do Pedido (opcional)</label>
+                            <input type="text" id="orderNotes" placeholder="Ex: sem cebola, ponto da carne, etc.">
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid var(--primary);">
+                            <h4 style="margin: 0 0 10px 0; color: var(--primary);">Resumo do Pedido</h4>
+                            <div id="orderSummary" style="font-size: 14px; color: #555;">
+                                <!-- Resumo será preenchido por JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="submit-payment" id="confirmOrderBtn">
+                            <i class="fas fa-check-circle"></i> Confirmar Pedido
+                        </button>
+                    </form>
+
+                    <div id="pixForm" style="display: none;">
+                        <div class="confirmation">
+                            <i class="fas fa-qrcode" style="font-size: 70px;"></i>
+                            <h3 style="margin: 15px 0 10px 0;">Pagamento via PIX</h3>
+                            <p style="color: #666; margin-bottom: 20px;">Escaneie o QR Code ou copie o código abaixo:</p>
+                            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 15px 0; border: 1px dashed #ddd;">
+                                <p id="pixCode" style="font-family: 'Courier New', monospace; word-break: break-all; font-size: 13px; margin: 0; line-height: 1.4;">
+                                    00020126580014BR.GOV.BCB.PIX0136123e4567-e12b-12d1-a456-426614174000520400005303986540510.005802BR5925BURGUER MASTER6009SAO PAULO62070503***6304E2CA
+                                </p>
+                            </div>
+                            <button class="submit-payment" id="copyPixBtn" style="background: var(--accent);">
+                                <i class="fas fa-copy"></i> Copiar Código PIX
+                            </button>
+                            <p style="margin-top: 15px; font-size: 14px; color: #666;">
+                                Após o pagamento, seu pedido será confirmado automaticamente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="orderConfirmation" style="display: none;">
+                    <div class="confirmation">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 style="margin: 15px 0 10px 0; color: var(--success);">Pedido Confirmado!</h3>
+                        <p id="orderNumber" style="font-size: 16px; margin-bottom: 15px;">
+                            Seu pedido #<span id="orderId" style="font-weight: bold;">12345</span> foi recebido com sucesso.
+                        </p>
+                        <p style="margin-bottom: 8px;"><strong>📞 Tempo estimado:</strong> 25-35 minutos</p>
+                        <p style="margin-bottom: 20px;"><strong>📍 Status:</strong> Em preparação</p>
+                        <p style="color: #666; margin-bottom: 25px; font-size: 15px;">
+                            Você receberá atualizações por WhatsApp. Obrigado pela preferência!
+                        </p>
+                        <button class="submit-payment" id="newOrderBtn" style="background: var(--primary);">
+                            <i class="fas fa-utensils"></i> Fazer Novo Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Burguer Master &copy; 2024 - Todos os direitos reservados</p>
+            <p>WhatsApp: (11) 98765-4321 | Entregamos no centro e zona norte</p>
+            <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Horário de funcionamento: Segunda a Domingo, 18h às 23h</p>
+        </div>
+    </footer>
+
+    <script>
+        // Banco de dados de produtos
+        const menuItems = [
+            { 
+                id: 1, 
+                name: "Hambúrguer Clássico", 
+                description: "Pão, hambúrguer 180g, queijo, alface e tomate", 
+                price: 24.90, 
+                category: "burgers", 
+                icon: "fas fa-hamburger",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop"
+            },
+            { 
+                id: 2, 
+                name: "Hambúrguer Bacon", 
+                description: "Pão, hambúrguer 180g, queijo, bacon crocante", 
+                price: 29.90, 
+                category: "burgers", 
+                icon: "fas fa-bacon",
+                image: "https://images.unsplash.com/photo-1553979459-d2229ba7433c?w=400&h=300&fit=crop"
+            },
+            { 
+                id: 3, 
+                name: "Cheeseburguer Duplo", 
+                description: "Dois hambúrgueres, queijo cheddar, molho especial", 
+                price: 34.90, 
+                category: "burgers", 
+                icon: "fas fa-cheese",
+                image: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&h=300&fit=crop"
+            },
+            { 
+                id: 4, 
+                name: "Misto Quente", 
+                description: "Pão de forma, presunto, queijo e manteiga", 
+                price: 12.90, 
+                category: "snacks", 
+                icon: "fas fa-bread-slice",
+                image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&h=300&fit=crop"
+            },
+            { 
+                id: 5, 
+                name: "Hot Dog Completo", 
+                description: "Pão, salsicha, purê, batata palha, milho", 
+                price: 16.90, 
+                category: "snacks", 
+                icon: "fas fa-hotdog",
+                image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop"
+            },
+            { 
+                id: 6, 
+                name: "Batata Frita", 
+                description: "Porção de batata frita crocante com cheddar e bacon", 
+                price: 18.90, 
+                category: "snacks", 
+                icon: "fas fa-french-fries",
+                image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&h=300&fit=crop"
+            },
+            { 
+                id: 7, 
+                name: "Refrigerante 500ml", 
+                description: "Coca-Cola, Guaraná, Fanta ou Sprite", 
+                price: 8.90, 
+                category: "drinks", 
+                icon: "fas fa-soda-can",
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop"
+            },
+            { 
+                id: 8, 
+                name: "Suco Natural 500ml", 
+                description: "Laranja, Limão, Abacaxi ou Maracujá", 
+                price: 10.90, 
+                category: "drinks", 
+                icon: "fas fa-glass-whiskey",
+                image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop"
+            }
+        ];
+
+        // Estado do sistema
+        let cart = [];
+        let currentPaymentMethod = "pix";
+
+        // DOM Elements
+        const menuGrid = document.getElementById('menuGrid');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartTotal = document.getElementById('cartTotal');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const cartIcon = document.getElementById('cartIcon');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const paymentModal = document.getElementById('paymentModal');
+        const closeModal = document.getElementById('closeModal');
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const orderForm = document.getElementById('orderForm');
+        const pixForm = document.getElementById('pixForm');
+        const orderConfirmation = document.getElementById('orderConfirmation');
+        const copyPixBtn = document.getElementById('copyPixBtn');
+        const newOrderBtn = document.getElementById('newOrderBtn');
+        const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+        const orderSummary = document.getElementById('orderSummary');
+
+        // Inicializar menu
+        function initMenu() {
+            menuGrid.innerHTML = '';
+            
+            menuItems.forEach(item => {
+                const menuItemElement = document.createElement('div');
+                menuItemElement.className = 'menu-item';
+                menuItemElement.dataset.category = item.category;
+                
+                menuItemElement.innerHTML = `
+                    <div class="item-image">
+                        <img src="${item.image}" 
+                             alt="${item.name}" 
+                             class="product-img"
+                             onerror="this.onerror=null; this.style.display='none'; 
+                                      this.nextElementSibling.style.display='flex';">
+                        <div class="image-fallback" style="display: none;">
+                            <i class="${item.icon}"></i>
+                        </div>
+                    </div>
+                    <div class="item-content">
+                        <h3 class="item-title">${item.name}</h3>
+                        <p class="item-description">${item.description}</p>
+                        <div class="item-footer">
+                            <span class="item-price">R$ ${item.price.toFixed(2)}</span>
+                            <button class="add-to-cart" data-id="${item.id}">Adicionar</button>
+                        </div>
+                    </div>
+                `;
+                
+                menuGrid.appendChild(menuItemElement);
+            });
+            
+            // Adicionar eventos aos botões
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', addToCart);
+            });
+        }
+
+        // Adicionar ao carrinho
+        function addToCart(event) {
+            const itemId = parseInt(event.target.dataset.id);
+            const item = menuItems.find(menuItem => menuItem.id === itemId);
+            
+            const existingItem = cart.find(cartItem => cartItem.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...item,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            updateCheckoutButton();
+            
+            event.target.textContent = "✓ Adicionado";
+            event.target.style.backgroundColor = "var(--success)";
+            setTimeout(() => {
+                event.target.textContent = "Adicionar";
+                event.target.style.backgroundColor = "var(--accent)";
+            }, 1000);
+        }
+
+        // Atualizar carrinho
+        function updateCart() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                cartItems.innerHTML = '';
+                cartItems.appendChild(emptyCartMessage);
+            } else {
+                emptyCartMessage.style.display = 'none';
+                
+                let cartHTML = '';
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    cartHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <h4>${item.name}</h4>
+                                <p>R$ ${item.price.toFixed(2)}</p>
+                            </div>
+                            <div class="cart-item-actions">
+                                <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                            </div>
+                            <div>
+                                <strong>R$ ${itemTotal.toFixed(2)}</strong>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItems.innerHTML = cartHTML;
+                
+                document.querySelectorAll('.quantity-btn.minus').forEach(button => {
+                    button.addEventListener('click', decreaseQuantity);
+                });
+                
+                document.querySelectorAll('.quantity-btn.plus').forEach(button => {
+                    button.addEventListener('click', increaseQuantity);
+                });
+            }
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.textContent = `R$ ${total.toFixed(2)}`;
+        }
+
+        // Aumentar quantidade
+        function increaseQuantity(event) {
+            const itemId = parseInt(event.target.dataset.id);
+            const item = cart.find(item => item.id === itemId);
+            
+            if (item) {
+                item.quantity += 1;
+                updateCart();
+                updateCheckoutButton();
+            }
+        }
+
+        // Diminuir quantidade
+        function decreaseQuantity(event) {
+            const itemId = parseInt(event.target.dataset.id);
+            const itemIndex = cart.findIndex(item => item.id === itemId);
+            
+            if (itemIndex !== -1) {
+                if (cart[itemIndex].quantity > 1) {
+                    cart[itemIndex].quantity -= 1;
+                } else {
+                    cart.splice(itemIndex, 1);
+                }
+                
+                updateCart();
+                updateCheckoutButton();
+            }
+        }
+
+        // Atualizar botão de checkout
+        function updateCheckoutButton() {
+            checkoutBtn.disabled = cart.length === 0;
+        }
+
+        // Filtrar por categoria
+        function initCategoryFilter() {
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    
+                    const menuItemElements = document.querySelectorAll('.menu-item');
+                    menuItemElements.forEach(item => {
+                        if (category === 'all' || item.dataset.category === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        // Inicializar métodos de pagamento
+        function initPaymentMethods() {
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    paymentMethods.forEach(m => m.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    currentPaymentMethod = this.dataset.method;
+                    
+                    // Mostrar formulário apropriado
+                    if (currentPaymentMethod === 'pix') {
+                        orderForm.style.display = 'block';
+                        pixForm.style.display = 'block';
+                    } else {
+                        orderForm.style.display = 'block';
+                        pixForm.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Atualizar resumo do pedido no modal
+        function updateOrderSummary() {
+            let summaryHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                summaryHTML += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>${item.quantity}x ${item.name}</span>
+                        <span>R$ ${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            
+            summaryHTML += `
+                <div style="display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd; font-weight: bold;">
+                    <span>Total:</span>
+                    <span>R$ ${total.toFixed(2)}</span>
+                </div>
+            `;
+            
+            orderSummary.innerHTML = summaryHTML;
+        }
+
+        // Processar pedido
+        function processOrder(event) {
+            event.preventDefault();
+            
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const orderNotes = document.getElementById('orderNotes').value;
+            
+            // Validar dados
+            if (!customerName || !customerPhone || !customerAddress) {
+                alert('Por favor, preencha todos os campos obrigatórios (*)');
+                return;
+            }
+            
+            // Validar telefone
+            const phoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
+            if (!phoneRegex.test(customerPhone)) {
+                alert('Por favor, insira um número de WhatsApp válido.\nEx: (11) 99999-9999');
+                return;
+            }
+            
+            // Gerar ID do pedido
+            const orderId = Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('orderId').textContent = orderId;
+            
+            // Calcular total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Criar mensagem para WhatsApp
+            let whatsappMessage = `*🍔 NOVO PEDIDO - Burguer Master*%0A`;
+            whatsappMessage += `*Pedido #${orderId}*%0A`;
+            whatsappMessage += `%0A*👤 Cliente:* ${customerName}`;
+            whatsappMessage += `%0A*📞 WhatsApp:* ${customerPhone}`;
+            whatsappMessage += `%0A*📍 Endereço:* ${customerAddress}`;
+            if (orderNotes) {
+                whatsappMessage += `%0A*📝 Observações:* ${orderNotes}`;
+            }
+            whatsappMessage += `%0A*💳 Forma de pagamento:* ${currentPaymentMethod === 'pix' ? 'PIX' : currentPaymentMethod === 'credit' ? 'Cartão de Crédito' : currentPaymentMethod === 'debit' ? 'Cartão de Débito' : 'Dinheiro'}`;
+            whatsappMessage += `%0A%0A*🛒 ITENS DO PEDIDO:*%0A`;
+            
+            cart.forEach(item => {
+                whatsappMessage += `• ${item.quantity}x ${item.name} - R$ ${(item.price * item.quantity).toFixed(2)}%0A`;
+            });
+            
+            whatsappMessage += `%0A*💰 TOTAL: R$ ${total.toFixed(2)}*%0A`;
+            whatsappMessage += `%0A_*Pedido recebido via Site*_`;
+            
+            // Número do WhatsApp da lanchonete (EDITE AQUI)
+            const whatsappNumber = "5511987654321"; // Formato: 55 + DDD + número
+            
+            // Mostrar confirmação
+            document.getElementById('paymentForm').style.display = 'none';
+            orderConfirmation.style.display = 'block';
+            
+            // Abrir WhatsApp após 1.5 segundos
+            setTimeout(() => {
+                window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+            }, 1500);
+        }
+
+        // Copiar código PIX
+        function copyPixCode() {
+            const pixCode = document.getElementById('pixCode').textContent;
+            navigator.clipboard.writeText(pixCode).then(() => {
+                copyPixBtn.textContent = " ✓ Código Copiado!";
+                copyPixBtn.style.backgroundColor = "#3d8b40";
+                setTimeout(() => {
+                    copyPixBtn.innerHTML = '<i class="fas fa-copy"></i> Copiar Código PIX';
+                    copyPixBtn.style.backgroundColor = "";
+                }, 2000);
+            });
+        }
+
+        // Começar novo pedido
+        function startNewOrder() {
+            // Limpar carrinho
+            cart = [];
+            updateCart();
+            updateCheckoutButton();
+            
+            // Resetar modal
+            document.getElementById('paymentForm').style.display = 'block';
+            orderConfirmation.style.display = 'none';
+            orderForm.style.display = 'block';
+            pixForm.style.display = 'block';
+            
+            // Resetar formulário
+            orderForm.reset();
+            
+            // Resetar método de pagamento
+            paymentMethods.forEach(m => m.classList.remove('selected'));
+            document.querySelector('.payment-method[data-method="pix"]').classList.add('selected');
+            currentPaymentMethod = "pix";
+            
+            // Fechar modal
+            paymentModal.style.display = 'none';
+        }
+
+        // Abrir modal de pagamento
+        function openPaymentModal() {
+            if (cart.length > 0) {
+                // Atualizar resumo do pedido
+                updateOrderSummary();
+                
+                // Abrir modal
+                paymentModal.style.display = 'flex';
+                
+                // Resetar formulário
+                orderForm.reset();
+                document.getElementById('paymentForm').style.display = 'block';
+                orderConfirmation.style.display = 'none';
+                
+                // Focar no primeiro campo
+                setTimeout(() => {
+                    document.getElementById('customerName').focus();
+                }, 300);
+            }
+        }
+
+        // Fechar modal
+        function closePaymentModal() {
+            paymentModal.style.display = 'none';
+        }
+
+        // Inicializar aplicação
+        function initApp() {
+            initMenu();
+            updateCart();
+            updateCheckoutButton();
+            initCategoryFilter();
+            initPaymentMethods();
+            
+            // Event Listeners
+            checkoutBtn.addEventListener('click', openPaymentModal);
+            
+            cartIcon.addEventListener('click', () => {
+                document.querySelector('.cart-section').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+            
+            closeModal.addEventListener('click', closePaymentModal);
+            
+            // Fechar modal ao clicar fora ou pressionar ESC
+            window.addEventListener('click', (event) => {
+                if (event.target === paymentModal) {
+                    closePaymentModal();
+                }
+            });
+            
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && paymentModal.style.display === 'flex') {
+                    closePaymentModal();
+                }
+            });
+            
+            orderForm.addEventListener('submit', processOrder);
+            copyPixBtn.addEventListener('click', copyPixCode);
+            newOrderBtn.addEventListener('click', startNewOrder);
+        }
+
+        // Iniciar quando página carregar
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
