@@ -587,9 +587,9 @@
                 
                 <div class="logo-text">
                     <!-- NOME DA SUA LANCHONETE -->
-                    <h1 class="restaurant-name">Burguer Master</h1>
+                    <h1 class="restaurant-name">ITALIAN PIZZAS</h1>
                     <!-- SLOGAN -->
-                    <p class="restaurant-tagline">O melhor hambúrguer da cidade</p>
+                    <p class="restaurant-tagline">A melhor pizza da cidade</p>
                 </div>
             </div>
             <div class="cart-icon" id="cartIcon">
@@ -752,7 +752,7 @@
     <footer>
         <div class="container">
             <p>ITALIAN PIZZAS &copy; 2024 - Todos os direitos reservados</p>
-            <p>WhatsApp: (68) 98416-5499 | Entregamos em toda a baixada da sobral</p>
+            <p>WhatsApp: (68) 99209-9344 | Entregamos para toda a baixada da sobral</p>
             <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Horário de funcionamento: Segunda a Domingo, 18h às 23h</p>
         </div>
     </footer>
@@ -1103,27 +1103,56 @@
             // Calcular total
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // Criar mensagem para WhatsApp
-            let whatsappMessage = `*🍔 NOVO PEDIDO - Burguer Master*%0A`;
-            whatsappMessage += `*Pedido #${orderId}*%0A`;
-            whatsappMessage += `%0A*👤 Cliente:* ${customerName}`;
-            whatsappMessage += `%0A*📞 WhatsApp:* ${customerPhone}`;
-            whatsappMessage += `%0A*📍 Endereço:* ${customerAddress}`;
-            if (orderNotes) {
-                whatsappMessage += `%0A*📝 Observações:* ${orderNotes}`;
-            }
-            whatsappMessage += `%0A*💳 Forma de pagamento:* ${currentPaymentMethod === 'pix' ? 'PIX' : currentPaymentMethod === 'credit' ? 'Cartão de Crédito' : currentPaymentMethod === 'debit' ? 'Cartão de Débito' : 'Dinheiro'}`;
-            whatsappMessage += `%0A%0A*🛒 ITENS DO PEDIDO:*%0A`;
-            
-            cart.forEach(item => {
-                whatsappMessage += `• ${item.quantity}x ${item.name} - R$ ${(item.price * item.quantity).toFixed(2)}%0A`;
-            });
-            
-            whatsappMessage += `%0A*💰 TOTAL: R$ ${total.toFixed(2)}*%0A`;
-            whatsappMessage += `%0A_*Pedido recebido via Site*_`;
+            // DEBUG: Verificar carrinho ANTES de criar mensagem
+            console.log('🔍 DEBUG - Carrinho ao processar pedido:');
+            console.log('Número de itens no carrinho:', cart.length);
+            console.log('Itens no carrinho:', cart);
+            console.log('Carrinho vazio?', cart.length === 0);
+
+           // Se carrinho vazio, alertar e parar
+           if (cart.length === 0) {
+               alert('❌ ERRO: Carrinho vazio ao processar pedido!');
+               console.error('❌ CARRINHO VAZIO NO processOrder!');
+               return;
+           }
+
+           // Criar mensagem para WhatsApp CORRIGIDA
+           let whatsappMessage = `*🍕 NOVO PEDIDO - ITALIAN PIZZAS*%0A`;
+           whatsappMessage += `*Pedido #${orderId}*%0A`;
+           whatsappMessage += `%0A*👤 Cliente:* ${customerName}`;
+           whatsappMessage += `%0A*📞 WhatsApp do Cliente:* ${customerPhone}`;
+           whatsappMessage += `%0A*📍 Endereço:* ${customerAddress}`;
+           if (orderNotes) {
+               whatsappMessage += `%0A*📝 Observações:* ${orderNotes}`;
+           }
+           whatsappMessage += `%0A*💳 Forma de pagamento:* ${currentPaymentMethod === 'pix' ? 'PIX' : currentPaymentMethod === 'credit' ? 'Cartão de Crédito' : currentPaymentMethod === 'debit' ? 'Cartão de Débito' : 'Dinheiro'}`;
+           whatsappMessage += `%0A%0A*📦 ITENS DO PEDIDO:*%0A`;
+           whatsappMessage += `════════════════════%0A`;
+
+           // ADICIONAR ITENS (COM VERIFICAÇÃO)
+           cart.forEach((item, index) => {
+               console.log(`✅ Adicionando item ${index + 1}:`, item.name, item.quantity);
+               whatsappMessage += `${index + 1}. *${item.name}*%0A`;
+               whatsappMessage += `   ${item.quantity}x R$ ${item.price.toFixed(2)}%0A`;
+               whatsappMessage += `   Subtotal: R$ ${(item.price * item.quantity).toFixed(2)}%0A`;
+    
+               if (item.description) {
+                   whatsappMessage += `   (${item.description})%0A`;
+               }
+    
+              whatsappMessage += `%0A`;
+           });
+
+           whatsappMessage += `════════════════════%0A`;
+           whatsappMessage += `*💰 TOTAL: R$ ${total.toFixed(2)}*%0A`;
+           whatsappMessage += `%0A_*Pedido recebido via Site ITALIAN PIZZAS*_`;
+
+           // DEBUG: Mostrar mensagem completa
+           console.log('💬 Mensagem WhatsApp gerada:');
+           console.log(decodeURIComponent(whatsappMessage));
             
             // Número do WhatsApp da lanchonete (EDITE AQUI)
-            const whatsappNumber = "5511987654321"; // Formato: 55 + DDD + número
+            const whatsappNumber = "5568992099344"; // Formato: 55 + DDD + número
             
             // Mostrar confirmação
             document.getElementById('paymentForm').style.display = 'none';
