@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burguer Master - Faça seu pedido online</title>
+    <title>ITALIAN PIZZAS - Faça seu pedido online</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -336,26 +336,39 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            overflow-y: auto; /* Permite rolagem */
-            padding: 20px 0; /* Espaço para rolagem */
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background-color: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 10px;
+            background: var(--light);
+            width: 95%;
+            max-width: 600px;
+            border-radius: 20px;
             overflow: hidden;
-            margin: 20px auto; /* Centraliza com margem */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin: 30px auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            animation: modalSlide 0.4s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-header {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), #B71C1C);
             color: white;
-            padding: 20px;
+            padding: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -365,120 +378,168 @@
         }
 
         .modal-body {
-            padding: 25px;
-            max-height: 70vh; /* Altura máxima */
-            overflow-y: auto; /* Permite rolagem interna */
+            padding: 30px;
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .close-modal {
             cursor: pointer;
-            font-size: 24px;
+            font-size: 28px;
             background: rgba(255,255,255,0.2);
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
         }
 
         .payment-methods {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .payment-method {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            gap: 15px;
+            padding: 20px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
+            background: var(--light);
         }
 
         .payment-method:hover {
             border-color: var(--primary);
-            background-color: rgba(255, 107, 53, 0.05);
+            background: rgba(211, 47, 47, 0.05);
+            transform: translateY(-3px);
         }
 
         .payment-method.selected {
             border-color: var(--accent);
-            background-color: rgba(0, 78, 137, 0.08);
+            background: rgba(25, 118, 210, 0.08);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.1);
         }
 
         .payment-icon {
-            font-size: 24px;
+            font-size: 28px;
             color: var(--accent);
-            min-width: 40px;
+            min-width: 50px;
+            background: rgba(25, 118, 210, 0.1);
+            padding: 12px;
+            border-radius: 10px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #555;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 16px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 16px 20px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
             font-size: 16px;
-            transition: border 0.3s;
+            transition: all 0.3s;
+            background: var(--light);
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+            background: white;
         }
 
         .submit-payment {
             width: 100%;
-            padding: 16px;
-            background-color: var(--success);
+            padding: 20px;
+            background: linear-gradient(135deg, var(--success), #2E7D32);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
 
         .submit-payment:hover {
-            background-color: #3d8b40;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
         }
+
 
         /* Confirmação do Pedido */
         .confirmation {
             text-align: center;
-            padding: 30px 20px;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            border-radius: 15px;
+            border: 2px solid #C8E6C9;
         }
 
         .confirmation i {
-            font-size: 60px;
+            font-size: 80px;
             color: var(--success);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
         }
 
         /* Footer */
-        footer {
-            background-color: var(--dark);
+         footer {
+            background: linear-gradient(135deg, var(--dark), #000);
             color: white;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 5px solid var(--primary);
+        }
+
+        footer p {
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+
+        .whatsapp-link {
+            color: #25D366;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-link:hover {
+            color: #1DA851;
+            text-decoration: underline;
         }
 
         /* Scroll personalizado */
@@ -587,9 +648,9 @@
                 
                 <div class="logo-text">
                     <!-- NOME DA SUA LANCHONETE -->
-                    <h1 class="restaurant-name">ITALIAN PIZZAS</h1>
+                    <h1 class="restaurant-name">Italian Pizzas</h1>
                     <!-- SLOGAN -->
-                    <p class="restaurant-tagline">A melhor pizza da cidade</p>
+                    <p class="restaurant-tagline">A melhor pizza da cidade!</p>
                 </div>
             </div>
             <div class="cart-icon" id="cartIcon">
@@ -604,7 +665,7 @@
         <main>
             <!-- Menu Section -->
             <section class="menu-section">
-                <h2 class="section-title">Cardápio</h2>
+                <h2 class="section-title"><i class="fas fa-utensils"></i> Cardápio Digital</h2>
                 
                 <div class="category-filter">
                     <button class="category-btn active" data-category="all">Todos</button>
@@ -620,19 +681,32 @@
             </section>
 
             <!-- Cart Section -->
-            <section class="cart-section">
-                <h2 class="section-title">Seu Pedido</h2>
+           <section class="cart-section">
+                <h2 class="section-title"><i class="fas fa-shopping-bag"></i> Seu Pedido</h2>
                 
                 <div class="cart-items" id="cartItems">
-                    <p class="empty-cart-message" id="emptyCartMessage">Seu carrinho está vazio. Adicione itens do cardápio.</p>
+                    <p class="empty-cart-message" id="emptyCartMessage">
+                        <i class="fas fa-shopping-cart" style="font-size: 48px; color: #CCC; margin-bottom: 15px; display: block;"></i>
+                        Seu carrinho está vazio<br>
+                        <small>Adicione itens deliciosos do cardápio!</small>
+                    </p>
                 </div>
                 
                 <div class="cart-total">
-                    <span>Total:</span>
+                    <span>Total do Pedido:</span>
                     <span id="cartTotal">R$ 0,00</span>
                 </div>
                 
-                <button class="checkout-btn" id="checkoutBtn" disabled>Finalizar Pedido</button>
+                <button class="checkout-btn" id="checkoutBtn" disabled>
+                    <i class="fas fa-check-circle"></i> Finalizar Pedido
+                </button>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #FFF3E0; border-radius: 10px; border-left: 4px solid var(--secondary);">
+                    <p style="margin: 0; font-size: 14px; color: #666;">
+                        <i class="fas fa-info-circle" style="color: var(--secondary);"></i>
+                        <strong>Taxa de entrega:</strong> A combinar via WhatsApp
+                    </p>
+                </div>
             </section>
         </main>
     </div>
@@ -727,21 +801,34 @@
                     </div>
                 </div>
 
-                <div id="orderConfirmation" style="display: none;">
+                 <div id="orderConfirmation" style="display: none;">
                     <div class="confirmation">
                         <i class="fas fa-check-circle"></i>
-                        <h3 style="margin: 15px 0 10px 0; color: var(--success);">Pedido Confirmado!</h3>
-                        <p id="orderNumber" style="font-size: 16px; margin-bottom: 15px;">
-                            Seu pedido #<span id="orderId" style="font-weight: bold;">12345</span> foi recebido com sucesso.
+                        <h3 style="margin: 20px 0 15px 0; color: var(--success);">Pedido Confirmado! ✅</h3>
+                        <p id="orderNumber" style="font-size: 18px; margin-bottom: 20px; background: white; padding: 15px; border-radius: 10px; border: 2px dashed var(--success);">
+                            Pedido #<span id="orderId" style="font-weight: bold; color: var(--primary);">12345</span>
+                            <br><small style="color: #666;">Anote este número para acompanhar</small>
                         </p>
-                        <p style="margin-bottom: 8px;"><strong>📞 Tempo estimado:</strong> 25-35 minutos</p>
-                        <p style="margin-bottom: 20px;"><strong>📍 Status:</strong> Em preparação</p>
-                        <p style="color: #666; margin-bottom: 25px; font-size: 15px;">
-                            Você receberá atualizações por WhatsApp. Obrigado pela preferência!
+                        
+                        <div style="text-align: left; background: white; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px solid #EEE;">
+                            <p style="margin: 8px 0;"><strong>📞 Tempo estimado:</strong> 25-35 minutos</p>
+                            <p style="margin: 8px 0;"><strong>📍 Status:</strong> <span style="color: var(--warning);">⏳ Em preparação</span></p>
+                            <p style="margin: 8px 0;"><strong>💳 Pagamento:</strong> <span id="paymentStatusText">Pendente</span></p>
+                            <p style="margin: 8px 0;"><strong>📱 Acompanhamento:</strong> Via WhatsApp</p>
+                        </div>
+                        
+                        <p style="color: #666; margin-bottom: 25px; font-size: 16px; line-height: 1.6;">
+                            <i class="fas fa-info-circle" style="color: var(--accent);"></i>
+                            O dono já recebeu seu pedido com <strong>TODOS os detalhes</strong> no WhatsApp e entrará em contato em breve.
                         </p>
-                        <button class="submit-payment" id="newOrderBtn" style="background: var(--primary);">
+                        
+                        <button class="submit-payment" id="newOrderBtn" style="background: linear-gradient(135deg, var(--primary), #B71C1C);">
                             <i class="fas fa-utensils"></i> Fazer Novo Pedido
                         </button>
+                        
+                        <p style="margin-top: 20px; font-size: 14px; color: #999;">
+                            Obrigado pela preferência! 🍕
+                        </p>
                     </div>
                 </div>
             </div>
@@ -751,9 +838,26 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>ITALIAN PIZZAS &copy; 2024 - Todos os direitos reservados</p>
-            <p>WhatsApp: (68) 99209-9344 | Entregamos para toda a baixada da sobral</p>
-            <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Horário de funcionamento: Segunda a Domingo, 18h às 23h</p>
+            <h3 style="margin-bottom: 20px; color: white;">Italian Pizzas</h3>
+            <p>
+                <i class="fab fa-whatsapp" style="color: #25D366;"></i> 
+                WhatsApp: 
+                <a href="https://wa.me/5568992099344" class="whatsapp-link" target="_blank">
+                    (68) 99209-9344
+                </a>
+            </p>
+            <p>
+                <i class="fas fa-map-marker-alt" style="color: #FF9800;"></i> 
+                Entregamos para toda Baixada da Sobral
+            </p>
+            <p>
+                <i class="fas fa-clock" style="color: #2196F3;"></i> 
+                Horário: Segunda a Domingo, 18h às 23h
+            </p>
+            <p style="margin-top: 25px; font-size: 14px; opacity: 0.7;">
+                &copy; 2025 Seto Kaiba Corporation - Todos os direitos reservados<br>
+                <small>Sistema de pedidos online desenvolvido para facilitar seu delivery</small>
+            </p>
         </div>
     </footer>
 
@@ -1103,53 +1207,24 @@
             // Calcular total
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            // DEBUG: Verificar carrinho ANTES de criar mensagem
-            console.log('🔍 DEBUG - Carrinho ao processar pedido:');
-            console.log('Número de itens no carrinho:', cart.length);
-            console.log('Itens no carrinho:', cart);
-            console.log('Carrinho vazio?', cart.length === 0);
-
-           // Se carrinho vazio, alertar e parar
-           if (cart.length === 0) {
-               alert('❌ ERRO: Carrinho vazio ao processar pedido!');
-               console.error('❌ CARRINHO VAZIO NO processOrder!');
-               return;
-           }
-
-           // Criar mensagem para WhatsApp CORRIGIDA
-           let whatsappMessage = `*🍕 NOVO PEDIDO - ITALIAN PIZZAS*%0A`;
-           whatsappMessage += `*Pedido #${orderId}*%0A`;
-           whatsappMessage += `%0A*👤 Cliente:* ${customerName}`;
-           whatsappMessage += `%0A*📞 WhatsApp do Cliente:* ${customerPhone}`;
-           whatsappMessage += `%0A*📍 Endereço:* ${customerAddress}`;
-           if (orderNotes) {
-               whatsappMessage += `%0A*📝 Observações:* ${orderNotes}`;
-           }
-           whatsappMessage += `%0A*💳 Forma de pagamento:* ${currentPaymentMethod === 'pix' ? 'PIX' : currentPaymentMethod === 'credit' ? 'Cartão de Crédito' : currentPaymentMethod === 'debit' ? 'Cartão de Débito' : 'Dinheiro'}`;
-           whatsappMessage += `%0A%0A*📦 ITENS DO PEDIDO:*%0A`;
-           whatsappMessage += `════════════════════%0A`;
-
-           // ADICIONAR ITENS (COM VERIFICAÇÃO)
-           cart.forEach((item, index) => {
-               console.log(`✅ Adicionando item ${index + 1}:`, item.name, item.quantity);
-               whatsappMessage += `${index + 1}. *${item.name}*%0A`;
-               whatsappMessage += `   ${item.quantity}x R$ ${item.price.toFixed(2)}%0A`;
-               whatsappMessage += `   Subtotal: R$ ${(item.price * item.quantity).toFixed(2)}%0A`;
-    
-               if (item.description) {
-                   whatsappMessage += `   (${item.description})%0A`;
-               }
-    
-              whatsappMessage += `%0A`;
-           });
-
-           whatsappMessage += `════════════════════%0A`;
-           whatsappMessage += `*💰 TOTAL: R$ ${total.toFixed(2)}*%0A`;
-           whatsappMessage += `%0A_*Pedido recebido via Site ITALIAN PIZZAS*_`;
-
-           // DEBUG: Mostrar mensagem completa
-           console.log('💬 Mensagem WhatsApp gerada:');
-           console.log(decodeURIComponent(whatsappMessage));
+            // Criar mensagem para WhatsApp
+            let whatsappMessage = `*🍔 NOVO PEDIDO - Burguer Master*%0A`;
+            whatsappMessage += `*Pedido #${orderId}*%0A`;
+            whatsappMessage += `%0A*👤 Cliente:* ${customerName}`;
+            whatsappMessage += `%0A*📞 WhatsApp:* ${customerPhone}`;
+            whatsappMessage += `%0A*📍 Endereço:* ${customerAddress}`;
+            if (orderNotes) {
+                whatsappMessage += `%0A*📝 Observações:* ${orderNotes}`;
+            }
+            whatsappMessage += `%0A*💳 Forma de pagamento:* ${currentPaymentMethod === 'pix' ? 'PIX' : currentPaymentMethod === 'credit' ? 'Cartão de Crédito' : currentPaymentMethod === 'debit' ? 'Cartão de Débito' : 'Dinheiro'}`;
+            whatsappMessage += `%0A%0A*🛒 ITENS DO PEDIDO:*%0A`;
+            
+            cart.forEach(item => {
+                whatsappMessage += `• ${item.quantity}x ${item.name} - R$ ${(item.price * item.quantity).toFixed(2)}%0A`;
+            });
+            
+            whatsappMessage += `%0A*💰 TOTAL: R$ ${total.toFixed(2)}*%0A`;
+            whatsappMessage += `%0A_*Pedido recebido via Site*_`;
             
             // Número do WhatsApp da lanchonete (EDITE AQUI)
             const whatsappNumber = "5568992099344"; // Formato: 55 + DDD + número
@@ -1265,6 +1340,67 @@
             copyPixBtn.addEventListener('click', copyPixCode);
             newOrderBtn.addEventListener('click', startNewOrder);
         }
+
+        // Número do WhatsApp da pizzaria (somente números)
+const WHATSAPP_NUMBER = "68992099344";
+
+// Envia o pedido finalizado para WhatsApp
+function sendOrderToWhatsApp(order) {
+    const message =
+`🍕 *NOVO PEDIDO - ITALIAN PIZZAS* 🍕
+──────────────────────
+
+👤 *Cliente:* ${order.name}
+📱 *WhatsApp:* ${order.phone}
+📍 *Endereço:* ${order.address}
+
+🧾 *Itens do Pedido:*
+${order.items.map(i => `• ${i.quantity}x ${i.name} — R$ ${i.total.toFixed(2)}`).join("\n")}
+
+💵 *Total:* R$ ${order.total.toFixed(2)}
+💳 *Pagamento:* ${order.payment.toUpperCase()}
+
+📝 *Observações:* ${order.notes || "Nenhuma"}
+
+──────────────────────
+📅 Pedido enviado automaticamente pelo sistema.`;
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+}
+
+// Captura o envio do formulário
+document.getElementById("orderForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // Dados do cliente
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+    const address = document.getElementById("customerAddress").value.trim();
+    const notes = document.getElementById("orderNotes").value.trim();
+
+    // Forma de pagamento
+    const payment = document.querySelector(".payment-method.selected").dataset.method;
+
+    // Itens do carrinho
+    const items = cart.map(i => ({
+        name: i.name,
+        quantity: i.quantity,
+        price: i.price,
+        total: i.price * i.quantity
+    }));
+
+    const total = items.reduce((sum, i) => sum + i.total, 0);
+
+    // Objeto final do pedido
+    const order = { name, phone, address, notes, payment, items, total };
+
+    sendOrderToWhatsApp(order);
+
+    document.getElementById("paymentModal").style.display = "none";
+    alert("Pedido enviado com sucesso! Aguarde o atendimento pelo WhatsApp.");
+});
+
 
         // Iniciar quando página carregar
         document.addEventListener('DOMContentLoaded', initApp);
